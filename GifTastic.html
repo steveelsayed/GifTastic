@@ -1,29 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GiphTastic</title>
-	<script src='http://code.jquery.com/jquery-2.1.3.min.js'> </script>
+ <title>GiphTastic</title>
+ <script src='http://code.jquery.com/jquery-2.1.3.min.js'> </script>
 </head>
 <body>
-<button data-search="Mammal"> Mammal </button>;
-<button data-search="Reptile"> Reptile </button>;
-<button data-search="Insect"> Insect </button>;
-<div id = "GIF Area"></div>
+
+<button class= "btn" value="reptile">reptile</button>
+<button class= "btn" value="insect">insect</button>
+<button class= "btn" value="mammal">mammal</button>
+
+
+
+<div id = "GIFArea">
+
+	
+</div>
+
+
+
 <script type="text/javascript">
-	$("button").on("click", function(){
-		var x= $(this).data("search");
-		var queryUrl = "http:api.giphy.com/v1/gifs/search?q= "+x+" &api key=dc6zaTOxFjmzC&limit=10";
-		console.log(queryUrl);
-	$ajax.({url:queryUrl, method: "GET"})
-		.done(function(response){
-			console.log(response);
-			for(var i=0;i=<response.data.lenght;i++){
-				$('#GIFArea').prepend("<img src='"+response.data[i].images.downsized.url + "'>");
-			}
-		})
+function viewGIF() {
+            
+            $("#GIFArea").empty();
+
+            var gifTitle = $(this).attr("value");
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gifTitle + "&api_key=dc6zaTOxFJmzC";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).done(function(response) {
+
+            	for (var i = 0; i < response.data.length; i++) {
+                    
+                 
+
+                    var gifImage = $("<img>")
+                    .attr("src", response.data[i].images.fixed_height_still.url)
+
+                    $("#GIFArea").prepend(gifImage);
+
+                }
 
 
-	})
+              
+
+
+        });
+    };
+
+$(document).on("click", ".btn", viewGIF);
+
+
 
 </script>
 </body>
